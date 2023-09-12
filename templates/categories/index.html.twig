@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategoriesController!{% endblock %}
+
+{% block body %}
+    <h1>Catégories disponibles</h1>
+    |{% for categorie in categories %}
+        <a href="{{ path('categorie.show', {slug: categorie.slug, id: categorie.id}) }}">{{ categorie.title }}</a> |
+    {% endfor %}
+{% endblock %}

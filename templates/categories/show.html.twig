@@ -1,20 +1,15 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Article{% endblock %}
+{% block title "Catégorie #" ~ categorie.id %}
 
 {% block body %}
-    <h1>Tout les articles</h1>
-    {% for article in articles %}
+
+    <h1>Cette catégorie possède {{ categorie.articles | length }} articles</h1>
+    {% for article in categorie.articles %}
         <div class="card mb-3">
             <h5 class="card-header">{{ article.title }}</h5>
             <div class="card-body">
                 {# <h5 class="card-title">Special title treatment</h5> #}
                 <p class="card-text">{{ article.contenue }}</p>
-                <p>
-                    {% for categorie in article.categories %}
-                        <small><a href="{{ path('categorie.show', {id: categorie.id, slug: categorie.slug}) }}">#{{ categorie.title }}</a></small>
-                    {% endfor %}
-                </p>
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-between">
@@ -25,3 +20,6 @@
         </div>
     {% endfor %}
 {% endblock %}
+
+
+
