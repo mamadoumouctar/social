@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <h1>Tout les articles</h1>
+    {% for article in articles %}
+        <div class="card mb-3">
+            <h5 class="card-header">{{ article.title }}</h5>
+            <div class="card-body">
+                {# <h5 class="card-title">Special title treatment</h5> #}
+                <p class="card-text">{{ article.contenue }}</p>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted">Création : {{ article.createdAt | date('j M Y à H:m') }}</small>
+                    <small class="text-muted">Dernière midification : {{ article.createdAt | date('j M Y à H:m') }}</small>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
