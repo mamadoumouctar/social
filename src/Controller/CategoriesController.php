@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/categories')]
 class CategoriesController extends AbstractController
 {
-    #[Route('', name: 'categorie.index')]
+    #[Route('', name: 'categorie.index', methods: ['GET'])]
     public function index(CategorieRepository $repository): Response
     {
         return $this->render('categories/index.html.twig', [
@@ -19,7 +19,7 @@ class CategoriesController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug<[a-z\-]+>}-{id<\d+>}', name: 'categorie.show')]
+    #[Route('/{slug<[a-z\-0-9]+>}-{id<\d+>}', name: 'categorie.show', methods: ['GET'])]
     public function show(int $id, string $slug, CategorieRepository $repository): Response
     {
         $categorie = $repository->find($id);

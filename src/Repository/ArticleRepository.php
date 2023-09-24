@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -33,6 +34,23 @@ class ArticleRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findArticleDetail(int $id): mixed
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('c', 'co')
+            ->where('c.id = :id')
+            ->join('a.categories', 'c')
+            ->join('a.commentaires', 'co')
+            ->orderBy('co.id', 'DESC')
+            ->setParameter('id', $id)
+            ->getQuery()
+            //->getOneOrNullResult()
         ;
     }
 

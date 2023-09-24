@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
+
 {% block title "Catégorie #" ~ categorie.id %}
 
 {% block body %}
-
     <h1>Cette catégorie possède {{ categorie.articles | length }} articles</h1>
     {% for article in categorie.articles %}
         <div class="card mb-3">
@@ -13,13 +13,20 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-between">
-                    <small class="text-muted">Création : {{ article.createdAt | date('j M Y à H:m') }}</small>
-                    <small class="text-muted">Dernière midification : {{ article.createdAt | date('j M Y à H:m') }}</small>
+                    <div>
+                        4 <i class="fa-solid fa-thumbs-up"></i>
+                        <i class="fa-regular fa-thumbs-up"></i>
+                        <i class="fa-solid fa-comment"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted">Création : {{ article.createdAt | date('j M Y à H:m') }}</small> |
+                        <small class="text-muted">Dernière midification : {{ article.createdAt | date('j M Y à H:m') }}</small>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-user"></i> Tm
+                    </div>
                 </div>
             </div>
         </div>
     {% endfor %}
 {% endblock %}
-
-
-

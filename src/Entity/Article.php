@@ -31,11 +31,18 @@ class Article
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'articles', cascade: ['persist'])]
     private Collection $categories;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?User $autor = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Commentaire::class, cascade: ['persist'])]
+    private Collection $commentaires;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->categories = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,6 +60,11 @@ class Article
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return str_replace(' ', '-', strtolower($this->getTitle()));
     }
 
     public function getContenue(): ?string
@@ -111,6 +123,48 @@ class Article
     public function removeCategory(Categorie $category): static
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getAutor(): ?User
+    {
+        return $this->autor;
+    }
+
+    public function setAutor(?User $autor): static
+    {
+        $this->autor = $autor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getArticle() === $this) {
+                $commentaire->setArticle(null);
+            }
+        }
 
         return $this;
     }
