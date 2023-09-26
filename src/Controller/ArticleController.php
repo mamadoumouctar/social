@@ -49,7 +49,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug<.*>}-{id<\d+>}', name: 'article.show', methods: ['GET', 'POST'])]
+    #[Route('/{slug<.*>}/{id<\d+>}', name: 'article.show', methods: ['GET', 'POST'])]
     public function show(string $slug, int $id, ArticleRepository $repository, Request $request, EntityManagerInterface $em): Response
     {
         $article = $repository->findArticleDetail($id);
