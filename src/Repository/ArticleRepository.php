@@ -29,7 +29,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->addSelect('c')
-            ->join('a.categories', 'c')
+            ->leftJoin('a.categories', 'c')
             ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
