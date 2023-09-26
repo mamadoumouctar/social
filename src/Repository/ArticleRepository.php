@@ -37,20 +37,17 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
-    public function findArticleDetail(int $id): mixed
+    public function findArticleDetail(int $id): ?Article
     {
         return $this->createQueryBuilder('a')
             ->addSelect('c', 'co')
-            ->where('c.id = :id')
+            ->where('a.id = :id')
             ->join('a.categories', 'c')
             ->join('a.commentaires', 'co')
             ->orderBy('co.id', 'DESC')
             ->setParameter('id', $id)
             ->getQuery()
-            //->getOneOrNullResult()
+            ->getOneOrNullResult()
         ;
     }
 

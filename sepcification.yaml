@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: "je suis un titre"
+  description: je suis une description
+  version: 0.0.1
+
+servers:
+  - url: "http://localhost:8000"
+
+paths:
+  /api/articles:
+    get:
+      tags:
+        - Articles
+      description: 'Affiche la liste des articles'
+      responses:
+        '200':
+          description: "Tout s'est bien passée"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+  /api/articles/{slug}-{id}:
+    get:
+      tags:
+        - Articles
+      description: "Affiche le detail d'un article"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Id de l'Article"
+          schema:
+            type: integer
+            format: int64
+        - name: slug
+          in: path
+          required: true
+          description: "Slug de l'Article"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Tout va bien"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+
+components:
+  schemas:
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: Article 1

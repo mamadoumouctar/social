@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\isNull;
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -48,11 +49,13 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug<[a-z\-]+>}-{id<\d+>}', name: 'article.show', methods: ['GET', 'POST'])]
+    #[Route('/{slug<.*>}-{id<\d+>}', name: 'article.show', methods: ['GET', 'POST'])]
     public function show(string $slug, int $id, ArticleRepository $repository, Request $request, EntityManagerInterface $em): Response
     {
         $article = $repository->findArticleDetail($id);
-        dd($article);
+
+        if(!$article) throw $this->createNotFoundException();
+
         if($article->getSlug() !== $slug) return $this->redirectToRoute('article.show', [
             'id' => $article->getId(),
             'slug' => $article->getSlug()

@@ -21,6 +21,16 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
+    public function findCategoriesWithArticles(): mixed
+    {
+        return $this->createQueryBuilder('c')
+            ->addSelect('a')
+            ->join('c.articles', 'a')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Categorie[] Returns an array of Categorie objects
 //     */

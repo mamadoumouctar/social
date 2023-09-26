@@ -2,25 +2,41 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\Api\Categorie\GetCategoriesController;
 use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['read:categories']
+    ],
+    denormalizationContext: [
+        'groups' => ['write:categories']
+    ]
+)]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:articles', 'read:categories'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 4)]
+    #[Groups(['read:articles', 'read:categories', 'write:categories'])]
     private ?string $title = null;
 
     #[ORM\ManyToMany(targetEntity: Article::class, mappedBy: 'categories')]
+    #[Groups(['read:categories'])]
     private Collection $articles;
 
     public function __construct()

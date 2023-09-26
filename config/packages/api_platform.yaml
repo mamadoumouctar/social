@@ -1,0 +1,26 @@
+api_platform:
+    title: Social API
+    version: 1.0.0
+    description: Ceci est une API qui gère les données de notre réseau social
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        extra_properties:
+            standard_put: true
+
+    swagger:
+        versions: [3]
+        api_keys:
+            apiKey:
+                name: Authorization
+                type: header
+        swagger_ui_extra_configuration:
+            host: 'localhost:8000'
+            servers:
+                - url: 'localhost:800'
+
+    #mapping:
+    #    paths:
+    #        - '%kernel.project_dir%/config/api_platform'
+

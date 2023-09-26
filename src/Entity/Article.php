@@ -2,36 +2,58 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['read:articles']
+    ],
+    denormalizationContext: [
+        'groups' => ['write:articles']
+    ]
+)]
 class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:articles', 'read:categories'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5, max: 1254)]
+    #[Groups(['read:articles', 'read:categories', 'write:articles'])]
     private ?string $title = null;
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['read:articles', 'read:categories', 'write:articles'])]
     private ?string $contenue = null;
 
     #[ORM\Column]
+    #[Groups(['read:articles', 'read:categories'])]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column]
+    #[Groups(['read:articles', 'read:categories'])]
     private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'articles', cascade: ['persist'])]
+    #[Groups(['read:articles'])]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[Groups('read:articles')]
     private ?User $autor = null;
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Commentaire::class, cascade: ['persist'])]
@@ -145,6 +167,12 @@ class Article
     public function getCommentaires(): Collection
     {
         return $this->commentaires;
+    }
+
+    #[Groups('read:articles')]
+    public function getNbComments(): ?int
+    {
+        return count($this->getCommentaires());
     }
 
     public function addCommentaire(Commentaire $commentaire): static

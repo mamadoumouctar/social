@@ -19,7 +19,7 @@ class CategoriesController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug<[a-z\-0-9]+>}-{id<\d+>}', name: 'categorie.show', methods: ['GET'])]
+    #[Route('/{slug<.*>}-{id<\d+>}', name: 'categorie.show', methods: ['GET'])]
     public function show(int $id, string $slug, CategorieRepository $repository): Response
     {
         $categorie = $repository->find($id);
