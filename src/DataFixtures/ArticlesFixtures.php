@@ -14,7 +14,7 @@ class ArticlesFixtures extends Fixture
         $faker = Factory::create();
         for ($i = 0; $i < 50; $i++){
             $article = (new Article())
-                ->setTitle($faker->name)
+                ->setTitle($faker->text(maxNbChars: 200))
                 ->setContenue($faker->text(maxNbChars: 900))
                 ->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime))
                 ->setUpdatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime))

@@ -29,14 +29,15 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:articles', 'read:categories'])]
+    #[Groups(['read:articles', 'read:categories', 'id:articles'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 5, max: 1254)]
+    #[Assert\NotBlank,Assert\Length(min: 5, max: 250)]
     #[Groups(['read:articles', 'read:categories', 'write:articles'])]
     private ?string $title = null;
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank, Assert\Length(min: 10, max: 900)]
     #[Groups(['read:articles', 'read:categories', 'write:articles'])]
     private ?string $contenue = null;
 

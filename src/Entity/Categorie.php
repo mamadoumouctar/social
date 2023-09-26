@@ -31,7 +31,7 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 4)]
+    #[Assert\NotBlank, Assert\Length(min: 4, max: 250)]
     #[Groups(['read:articles', 'read:categories', 'write:categories'])]
     private ?string $title = null;
 
